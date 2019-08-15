@@ -1,4 +1,5 @@
 # Collaborative filtering ecommender Systems
+
 ## Goal of the analysis
 In this unit, I work towards creating a recommender system using an item-based collaborative filter and cosine similarity in R. It will suggest which unit student should tackle next.
 
@@ -24,6 +25,6 @@ In education industry, an idealized recommender system provides a limited number
 
 
 ## Definitions and concepts
-1. *User- based collaborative filtering methods*: it generats predictions for users based on ratings from similar users. If a user n is similar to a user u, we say that n is a neighbor of u. User-based algorithms generate a prediction for an item i by analyzing ratings for i from users in neighborhood. 
+* User- based collaborative filtering methods: it generats predictions for users based on ratings from similar users. If a user n is similar to a user u, we say that n is a neighbor of u. User-based algorithms generate a prediction for an item i by analyzing ratings for i from users in neighborhood. 
 
-2. *Item-based collaborative filtering methods*: while user-based algorithms generate predictions based on similarities be-tween users, item-based algorithms generate predictions based on similarities between items. 
+* Item-based collaborative filtering methods: while user-based algorithms generate predictions based on similarities be-tween users, item-based algorithms generate predictions based on similarities between items. 
