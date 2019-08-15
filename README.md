@@ -1,6 +1,4 @@
 # Collaborative filtering ecommender Systems
-![1_aSq9viZGEYiWwL9uJ3Recw](https://user-images.githubusercontent.com/46146748/63115930-5f6c1900-bf66-11e9-894f-ecde5ec531b0.png)
-
 ## Goal of the analysis
 In this unit, I work towards creating a recommender system using an item-based collaborative filter and cosine similarity in R. It will suggest which unit student should tackle next.
 
@@ -18,6 +16,10 @@ install.packages("tidyr")
 5. Create a unit-based similarity matrix for difficulty and provide suggestions on which following unit a student is going to do based on the similarity of difficulty to another unit (e.g: "prediction")
 6. Create a composite measure (e.g.: PCA) from interest and difficulty, then construct a similarity matrix using this measure
 7. Generate a suggestion for a student who has just completed the "prediction" unit
+
+
+![1_aSq9viZGEYiWwL9uJ3Recw](https://user-images.githubusercontent.com/46146748/63115930-5f6c1900-bf66-11e9-894f-ecde5ec531b0.png)
+
 
 ## Background
 Collaborative filtering is the process of filtering or evaluating items through the opinions of other people (collaboration).It suggest content to a given user by developing a truly personalized view of that item using the opinions most appropriate for a given user or group of users “neighbors” (filtering). They are very commonly used in scenarios where there is incomplete information about a user's preferences such as Netflix suggestions or product recommendations on Amazon. It predicts what information users are likely to want to see, enabling providers to select subsets of information to display in the limited screen space and enabling the web to adapt to each individual users' needs.
