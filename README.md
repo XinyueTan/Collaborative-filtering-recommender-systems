@@ -9,7 +9,7 @@ install.packages("tidyr")
 ```
 
 ## Procedures
-1. Upload both the interest and difficulty csv files
+1. Load both the interest and difficulty csv files
 2. Convert both data frames to matrices
 3. Generate a user-based similarity matrix based on cosine similarity using the ratings the class gave each unit
 4. Find out who have the most similar interests with me in class
