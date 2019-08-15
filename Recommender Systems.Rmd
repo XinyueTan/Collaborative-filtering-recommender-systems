@@ -1,0 +1,134 @@
+---
+title: "collaborative-filter"
+author: "Xinyue Tan"
+date: "1/28/2019"
+output: html_document
+---
+
+In "HUDK4051 Learning Process& theory", there are six units. I will use students' ratings of these units in terms of both interest and difficulty to produce individual suggestions about what unit to attempt next.
+
+# Upload interest and difficulty csv files:
+```{r, warning=FALSE, message=FALSE}
+dt<-read.csv('C:/Users/35276/OneDrive/Documents/recommender-systems/difficulty.csv')
+d1<-read.csv('C:/Users/35276/OneDrive/Documents/recommender-systems/interest.csv')
+```
+
+# Convert data frames to matrices:
+```{r, warning=FALSE, message=FALSE}
+# Replace NA by 0
+# NA and 0 are the same (except value from 0-5) since I only want to find the similarity. I can even enter 99
+# Remove the student ids as matrices can only contain one data type. Then rename row names with the student ids.
+library(dplyr)
+I2<-select(d1,2:7)
+I2[is.na(I2)] <- 0
+I2<-as.matrix(I2)
+rownames(I2)<-d1$name
+
+D2<-select(dt,2:7)
+D2[is.na(D2)]<-0
+D2<-as.matrix(D2)
+rownames(D2)<-dt$name
+```
+
+# User-based similarity matrix- Interest data file
+I generate a user-based similarity matrix based on cosine similarity using the ratings the class gave each unit. This matrix will represent the similarity of interests between students in the class.
+
+```{r, warning=FALSE, message=FALSE}
+# First, I transpose the matrix so that multiplication occurs by students rather than units.
+
+# Missing values are coded with zero not NA.
+# Zeros: (Pros) Make the most of all the data at hand. (Cons) Assume that people have no interest in the unit with missing data or think the unit extremely easy, which is seldom the case.
+# NAs: (Pros) Not assume any interest or difficulty level without evidence. (Cons) Cosine function can't deal with missing values in a vector, which means some data that are not NAs will be wasted.
+
+I2 <- t(I2)
+
+# Install the lsa package to access the cosine command
+library(lsa)
+
+I.SIM <- cosine(I2) # This command generates the cosine similarity values for each pair of students as a new matrix. 
+
+diag(I.SIM) <- NA # Since each student will be most similar to themselves, I remove that information
+```
+
+# Which students are most similar to me 
+```{r, warning=FALSE, message=FALSE}
+#Input my name as it appears in the data set
+my.name<-"Xinyue Tan"
+
+head(rownames(I.SIM[order(I.SIM["Xinyue Tan",], decreasing = TRUE),]), n = 2)
+# This code orders the column of the matrix corresponding to my UNI according to similarity and returns the top two UNI ids for the students who's interests are most similar to mine
+# If I enter n=-3, it gives me the last three
+# "Chieh-An Yang" and "Delciane Wright" are two classmates that have the most similar interest as I do.
+```
+
+# Unit- based similarity matrix
+Then, I create a unit-based, rather than student-based similarity matrix for difficulty. Then I used similarity matrix to provide a suggested next unit to a student who is looking for the unit that is most similar in terms of difficulty to the "prediction" unit. 
+
+```{r, warning=FALSE, message=FALSE}
+D.SIM<-cosine(D2)
+diag(D.SIM)<-NA
+head(rownames(D.SIM[order(D.SIM["pred.dif",], decreasing = TRUE),]), n=1)
+# The unit "sna. dif" is the most familiar in terms of difficulty to the "prediction" unit.
+```
+
+# Compisite measure from interest and difficulty
+Finally, educational settings have important differences to purely commercial settings such as film or product suggestions. In education we want people not to just follow their interests as they may simply choose things that are easy for them so they learn very little. To reduce this possibility with my collaborative filter create a composite measure from interest and difficulty, then construct a similarity matrix using this measure. (HINT: PCA). 
+
+Once I built the similarity matrix, I generate a suggestion for a student who has just completed the "prediction" unit.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyr)
+library(lsa)
+I3<-gather (d1, unit, interest, 2:7)
+D3<-gather (dt, name, difficulty)
+
+# Combine column and convert matrix to data frame
+# Delete column 4 since it is duplicated
+C1 <- cbind.data.frame(I3,D3)[,-4]
+
+# Rename 
+names(C1)<-c("name","unit","interest","difficulty")
+
+# Filter cells with difficulty greater than 0
+C1<- filter(C1,difficulty>0)
+
+# Select interest and difficulty column
+C2<- select(C1, "interest", "difficulty")
+
+# #Run PCA and create a composite measure from interest and difficulty
+pc <- prcomp(C2)
+
+#Extract PC1 loadings as new measure and attach to stid & unit
+C3 <- data.frame(C1$name, C1$unit, pc$x)
+C4<- select(C3, C1.name, C1.unit, PC1)
+
+#Remove int from unit label
+C4$C1.unit <- gsub(".int", "", C4$C1.unit)
+
+# #Recreate unit by student matrix and spread C4 across multiple columns
+C5<- spread(C4, C1.name, PC1)
+
+# Rename the first raw from numbers to unit names
+row.names(C5) <- C5$C1.unit
+C5$C1.unit <- NULL
+
+# Covert C5 to matrix since cosine similarity can only understand matrix
+C5 <- as.matrix(C5)
+
+#ifelse(test, yes, no): if the cell is NA, change it to 0, becasue cos accept only o and cannot run NA  
+C5 <- ifelse(is.na(C5), 0, C5)
+
+#Given a matrix or data.frame x, t returns the transpose of x
+C5 <- t(C5)
+
+#Generate cosine similarity matrix for units
+C.SIM <- cosine(C5)
+diag(C.SIM) <- NA
+
+#Search for most similar unit to "Prediction"
+head(rownames(C.SIM[order(C.SIM["pred",], decreasing = TRUE),]), n = 1)
+#head:Returns the first or last parts of a vector, matrix, table, data frame or function.
+#order(C.SIM["pred",], decreasing = TRUE): find the biggest numebr from the descending order 
+#rownames: find the name of the unit
+# The unit "neural" is the most similar unit to "prediction" in terms of both the difficulty and interest
+```
