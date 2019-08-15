@@ -31,3 +31,6 @@ In education industry, an idealized recommender system provides a limited number
 * User- based collaborative filtering methods: it generats predictions for users based on ratings from similar users. If a user n is similar to a user u, we say that n is a neighbor of u. User-based algorithms generate a prediction for an item i by analyzing ratings for i from users in neighborhood. 
 
 * Item-based collaborative filtering methods: while user-based algorithms generate predictions based on similarities be-tween users, item-based algorithms generate predictions based on similarities between items. 
+
+## Author
+[Katherine (Xinyue) Tan](www.linkedin.com/in/katherine-tan-2019), M.S student in Learning Analytics at Teachers College, Columbia University
