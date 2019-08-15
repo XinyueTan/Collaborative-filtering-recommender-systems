@@ -1,4 +1,4 @@
-# Collaborative filtering ecommender Systems
+# Collaborative Filtering Recommender Systems
 ## Goal of the analysis
 In this unit, I work towards creating a recommender system using an item-based collaborative filter and cosine similarity in R. It will suggest which unit student should tackle next.
 
