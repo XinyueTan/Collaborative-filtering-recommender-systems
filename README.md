@@ -28,9 +28,9 @@ In education industry, an idealized recommender system provides a limited number
 
 
 ## Definitions and concepts
-* User- based collaborative filtering methods: it generats predictions for users based on ratings from similar users. If a user n is similar to a user u, we say that n is a neighbor of u. User-based algorithms generate a prediction for an item i by analyzing ratings for i from users in neighborhood. 
+* **User- based collaborative filtering methods**: it generats predictions for users based on ratings from similar users. If a user n is similar to a user u, we say that n is a neighbor of u. User-based algorithms generate a prediction for an item i by analyzing ratings for i from users in neighborhood. 
 
-* Item-based collaborative filtering methods: while user-based algorithms generate predictions based on similarities be-tween users, item-based algorithms generate predictions based on similarities between items. 
+* **Item-based collaborative filtering methods**: while user-based algorithms generate predictions based on similarities be-tween users, item-based algorithms generate predictions based on similarities between items. 
 
 ## Relevant Materials about Recommender Systems
 ### Related Readings
